@@ -1,0 +1,18 @@
+CREATE TABLE test
+	(ID INT,
+	 PlanNameMedical varchar(30),
+	 ContractTypeMedical varchar(30));
+
+INSERT INTO test(id,PlanNameMedical,ContractTypeMedical) VALUES (1,'AK HERITAGE SELECT AKS2', 'Subscriber Only');
+INSERT INTO test(id,PlanNameMedical,ContractTypeMedical) VALUES (2,'AK HERITAGE SELECT AKSAF', 'Subscriber & Dependents');
+INSERT INTO test(id,PlanNameMedical,ContractTypeMedical) VALUES (3,'AK HERITAGE SELECT AKSAF', 'Family');
+INSERT INTO test(id,PlanNameMedical,ContractTypeMedical) VALUES (4,'AK HERITAGE SELECT AKHS', 'Subscriber & Spouse');
+INSERT INTO test(id,PlanNameMedical,ContractTypeMedical) VALUES (5,'', '');
+
+SELECT *
+FROM   test a
+LEFT OUTER JOIN InsurancePlan b ON a.PlanNameMedical = b.InsuranceVendorPlanName
+LEFT OUTER JOIN InsuranceEnrollmentTypeXRef c ON a.ContractTypeMedical = c.InsuranceVendorContractType AND b.InsuranceEnrollmentTypeCode = c.InsuranceEnrollmentTypeCode
+WHERE  b.InsuranceEnrollmentTypeCode = c.InsuranceEnrollmentTypeCode
+OR	  (a.ContractTypeMedical = '' AND a.PlanNameMedical = '')
+ORDER BY id;

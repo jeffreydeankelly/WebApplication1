@@ -13,12 +13,22 @@ namespace WebApplication1
 {
     public partial class _Default : System.Web.UI.Page
     {
+        #region Properties
+//        private IntranetInstance ii;
+        protected System.Web.UI.HtmlControls.HtmlInputFile FileSelect;
+
+        public bool fileSelected
+        {
+            get { return FileSelect.PostedFile != null;  }
+        }
+
+        #endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            DataBind();
+//            ii = (IntranetInstance)Session["IntranetInstance"];
         }
-        protected System.Web.UI.HtmlControls.HtmlInputFile FileSelect;
-        //protected System.Web.UI.HtmlControls.HtmlInputButton FileUpload;
 
         protected void FileUpload_ServerClick(object sender, System.EventArgs e)
         {
@@ -75,7 +85,8 @@ namespace WebApplication1
                 sr.Close();
                 sr.Dispose();
 
-                createDatabaseTable(dt);
+                createDatabaseTempTable(dt);
+                insertInvoiceIntoPermTables(dt.TableName);
             }
             else
             {
@@ -84,7 +95,7 @@ namespace WebApplication1
             //return View();
         }
 
-        private void createDatabaseTable(DataTable dt)
+        private void createDatabaseTempTable(DataTable dt)
         {
             if (dt == null)
             {
@@ -126,5 +137,28 @@ namespace WebApplication1
                 sqlConn.Close();
             }
         }
+
+        protected void insertInvoiceIntoPermTables(string tempTableName)
+        {
+            //Variable Declarations
+/*          String storedProcedureName = "dbo.RDI_InsuranceVendorInvoiceImport";
+
+            SqlParameter[] prams = 
+            {
+                ii.UserAccess.MakeInParam("vendorId", SqlDbType.Int, 0, ddlVendor.SelectedValue),
+                ii.UserAccess.MakeInParam("invoiceNumber", SqlDbType.Int, 0, txtInvoiceNumber.Text),
+                ii.UserAccess.MakeInParam("invoicePeriodBegin", SqlDbType.DateTime, 0, txtInvoicePeriodBegin.Text),
+                ii.UserAccess.MakeInParam("invoicePeriodBegin", SqlDbType.DateTime, 0, txtInvoicePeriodEnd.Text),
+                ii.UserAccess.MakeInParam("invoiceDate", SqlDbType.DateTime, 0, txtInvoiceDate.Text),
+                ii.UserAccess.MakeInParam("balanceDueFromPrevInvoice", SqlDbType.Money, 0, txtDueFromPrevInvoice.Text),
+                ii.UserAccess.MakeInParam("creditsPostedSincePrevInvoice", SqlDbType.Money, 0, txtCreditsSincePrevInvoice.Text),
+                ii.UserAccess.MakeInParam("paymentDueDate", SqlDbType.DateTime, 0, txtPaymentDueDate.Text),
+                ii.UserAccess.MakeInParam("totalAmountDue", SqlDbType.Money, 0, txtTotalAmountDue.Text),
+                ii.UserAccess.MakeInParam("TempTable", SqlDbType.VarChar, 0, tempTableName)
+            };
+            // Consider refactoring dbo.RDI_InsuranceVendorInvoiceImport to return boolean to indicate successful insert
+            SqlHelper.ExecuteDataset(ii.UserAccess.ConnectionString, storedProcedureName, prams);
+*/        }
+
     }
 }

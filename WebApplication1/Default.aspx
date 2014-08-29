@@ -10,7 +10,7 @@
     <asp:Panel ID="pnlHeader" runat="server" Visible="True" CssClass="RDIModalPopup">
 
         <div class="DetailResults">
-        <h2 class="RDIBasicHeader">Insurance Invoice Header - <asp:Label ID="lblStatus" runat="server" /></h2>
+        <h2 class="RDIBasicHeader">Insurance Invoice Header<asp:Label ID="lblStatus" runat="server" /></h2>
         <table border="1">
             <tr>
                 <td align="center">
@@ -55,11 +55,19 @@
                     <ajax:CalendarExtender ID="calExNextContactDate" runat="server" TargetControlID="txtInvoicePeriodBegin"
                         PopupButtonID="ibNextContactDateCalendar" />
 --%>                </td>
+                <td align="center">
+                    <asp:TextBox ID="txtPaymentDueDate" runat="server" CssClass="RDITextBox"/>
+<%--                    <asp:ImageButton ID="ibNextContactDateCalendar" runat="server" CausesValidation="false"
+                        ImageUrl="~/ProjectTrack/images/icon_calendar.gif" />
+                    <ajax:CalendarExtender ID="calExNextContactDate" runat="server" TargetControlID="txtInvoicePeriodBegin"
+                        PopupButtonID="ibNextContactDateCalendar" />
+--%>                </td>
             </tr>                              
             <tr>
                 <td align="center" class="RDILabel">Invoice Period Begin</td>
                 <td align="center" class="RDILabel">Invoice Period End</td>
                 <td align="center" class="RDILabel">Invoice Date</td>
+                <td align="center" class="RDILabel">Payment Due Date</td>
             </tr>
             <tr>
             </tr>
@@ -71,25 +79,25 @@
                     <asp:RequiredFieldValidator ID="rfvEmployeeCost" runat="server" ControlToValidate="txtDueFromPrevInvoice" 
                         ErrorMessage="**Employee cost is required" Display="Dynamic" CssClass="RDIValidator" />
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ControlToValidate="txtDueFromPrevInvoice"
-                        ErrorMessage="**Invalid dollar amount" Display="Dynamic" ValidationExpression="^(-)?\d+(\.\d\d)?$" CssClass="RDIValidator" />
+                        ErrorMessage="**Invalid dollar amount" Display="Dynamic" CssClass="RDIValidator" ValidationExpression="^(-)?\d+(\.\d\d)?$" />
                 </td>
                 <td align="center">
                     $
                     <asp:TextBox ID="txtCreditsSincePrevInvoice" runat="server" CssClass="RDITextInput" 
                         MaxLength="10" Width="50" />
                     <asp:RequiredFieldValidator ID="rfvRDIHSAContribution" runat="server" ControlToValidate="txtCreditsSincePrevInvoice" 
-                        ErrorMessage="**RDI HSA Contribution amount is required" CssClass="RDIValidator" />
-                    <asp:RegularExpressionValidator Display="Dynamic" ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtCreditsSincePrevInvoice"
-                        ErrorMessage="**Invalid dollar amount" CssClass="RDIValidator" ValidationExpression="^(-)?\d+(\.\d\d)?$" />
+                        ErrorMessage="**RDI HSA Contribution amount is required" Display="Dynamic" CssClass="RDIValidator" />
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator6" runat="server" ControlToValidate="txtCreditsSincePrevInvoice"
+                        ErrorMessage="**Invalid dollar amount" Display="Dynamic" CssClass="RDIValidator" ValidationExpression="^(-)?\d+(\.\d\d)?$" />
                 </td>
                 <td align="center">
                     $
                     <asp:TextBox ID="txtTotalAmountDue" runat="server" CssClass="RDITextInput" 
                         MaxLength="10" Width="50" />
                     <asp:RequiredFieldValidator ID="rfvFringeBenefit" runat="server" ControlToValidate="txtTotalAmountDue" 
-                        ErrorMessage="**Fringe benefit amount is required" CssClass="RDIValidator" />
+                        ErrorMessage="**Fringe benefit amount is required" Display="Dynamic" CssClass="RDIValidator" />
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txtTotalAmountDue"
-                        ErrorMessage="**Invalid dollar amount" CssClass="RDIValidator" ValidationExpression="^(-)?\d+(\.\d\d)?$" />
+                        ErrorMessage="**Invalid dollar amount" Display="Dynamic" CssClass="RDIValidator" ValidationExpression="^(-)?\d+(\.\d\d)?$" />
                 </td>
             </tr>
             <tr>
@@ -97,12 +105,20 @@
                 <td  align="center" class="RDILabel">Credits Posted Since Prev Invoice</td>
                 <td  align="center" class="RDILabel">Total Amount Due</td>
             </tr>
+        </table>
+        </div>
+    </asp:Panel>
+
+    <asp:Panel ID="Panel1" runat="server" Visible="True" CssClass="RDIModalPopup">
+        <div class="DetailResults">
+        <h2 class="RDIBasicHeader">Insurance Invoice .CSV File<asp:Label ID="Label1" runat="server" /></h2>
+        <table border="1">
             <tr>
             </tr>
             <tr>
                 <td colspan="4" align="center">
-                    <input type="file" id="FileSelect"  name="FileSelect"  runat="server" />
-                    <asp:Button runat="server" id="FileUpload" text="Upload" onclick="FileUpload_ServerClick"  CausesValidation="false" />
+                    <input type="file" id="FileSelect" name="FileSelect" runat="server"/>
+                    <asp:Button runat="server" id="FileUpload" text="Upload" onclick="FileUpload_ServerClick" CausesValidation="false" Enabled='<%# (bool)DataBinder.Eval(Container, "fileSelected") %>'/>
                 </td>
             </tr>
         </table>
